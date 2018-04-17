@@ -1,0 +1,39 @@
+before==
+from sympy import *
+from random import *
+import math
+==
+evaluator==
+def py_wims(a):
+# transforme une string en expression sympy, sans la simplifier, renvoie None si echec de conversion.
+    with evaluate(False) :
+        try: a = sympify(a)
+        except (SympifyError, NameError, SyntaxError, IndexError):
+            return None
+        return a
+
+def is_nombre(a):
+# détermine si a est un nombre, avant même évaluation/simplification
+    number_types = [int, float, numbers.Catalan, numbers.EulerGamma, numbers.Exp1, \
+        numbers.Float, numbers.Half, numbers.ImaginaryUnit, numbers.Integer, numbers.NegativeOne, numbers.One, numbers.Pi]
+    return type(a) in number_types
+
+def is_fraction(a):
+# détermine si, sans simplification,  une  expression sympy est une fraction, au sens de : un nombre divisé par un autre
+    f = fraction(a)
+    return (is_nombre(f[0]) and  is_nombre(f[1]))
+
+def is_equal(a, b):
+# teste l'égalité de deux expressions sympy, après simplification. Utilisation typique: 
+# is_equal(py_wims(truc), py_wims(bidule)), donc l'argument est 'None' si la conversion
+# a échoué.
+    if (a == None) or (b == None) : return None # il y a eu echec de conversion sur a ou b
+    else : return  simplify(a-b) == 0
+==
+
+
+
+
+
+
+
